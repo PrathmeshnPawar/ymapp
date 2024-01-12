@@ -7,7 +7,7 @@ import CommonButton from '../../common/CommonButton/CommonButton';
 import  Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import GridWrapper from '../../common/GridWrapper/GridWrapper.js';
-import  Grid  from '@mui/material/Grid';
+//import  Grid  from '@mui/material/Grid';
 import cardHeaderStyles from './styles.js'
 //import BasicModal from '../../common/BasicModal/BasicModal.js';
 //import NewUserModal from '../../components/Modal/NewUserModal.js';
@@ -19,6 +19,7 @@ import NewUserModal from '../../components/Modal/NewUserModal.js';
 const Authentication = () => {
     const [open, setOpen] = useState(false);
     const [users, setUsers] = useState([]);
+    // eslint-disable-next-line no-unused-vars
     const [searchResults, setSearchResults] = useState(users);
 
     const getHeader = () => {
