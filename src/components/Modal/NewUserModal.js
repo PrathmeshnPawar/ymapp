@@ -5,16 +5,18 @@ import TextField from '@mui/material/TextField';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup'
+import axios from 'axios';
+//import { idID } from '@mui/material/locale';
 
 const defaultInputValues = {
-    userId: '',
+    id: '',
     email: '',
-    phoneNumber: ''
+    phone: ''
 };
 
 
 
-const NewUserModal = ({ open, onClose, addNewUser }) => {
+const NewUserModal = ({ open, onClose, addNewUser,id,email,phone }) => {
     const [values, setValues] = useState(defaultInputValues);
 
 
@@ -33,13 +35,13 @@ const NewUserModal = ({ open, onClose, addNewUser }) => {
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     const validationSchema = Yup.object().shape({
-        userId: Yup.string()
+        id: Yup.string()
             .required('User ID is required')
-            .min(6, 'User ID must be at least 6 characters'),
+            .min(0, 'User ID must be at least 6 characters'),
         email: Yup.string()
             .required('Email is required')
             .email('Email is invalid.'),
-        phoneNumber: Yup.string()
+        phone: Yup.string()
             .matches(phoneRegExp, 'Phone number is not valid'),
     });
 
@@ -51,7 +53,7 @@ const NewUserModal = ({ open, onClose, addNewUser }) => {
         resolver: yupResolver(validationSchema)
     });
 
- const addUser = (data) => {
+ const addUser = async (data) => {
     // Check if addNewUser is a function before calling it
     if (typeof addNewUser === 'function') {
         addNewUser(data);
@@ -59,10 +61,24 @@ const NewUserModal = ({ open, onClose, addNewUser }) => {
     } else {
         console.error('addNewUser is not a function');
     }
+    try {
+            const response = await axios.post('http://192.168.215.30:3000/api/create-user', {
+            id: data.id,
+            email: data.email,
+            phone: data.phone,
+        });
+        console.log('Server response:', response.data);
+
+        // You can update your state or perform other actions based on the response if necessary
+    } catch (error) {
+        console.log("Error",error)
+    }    
 };
 
-    const handleChange = (value) => {
+    const handleChange =  (value) => {
         setValues(value)
+       
+
     };
 
     useEffect(() => {
@@ -73,10 +89,10 @@ const NewUserModal = ({ open, onClose, addNewUser }) => {
         <Box sx={modalStyles.inputFields}>
             <TextField
                 placeholder="User ID"
-                name="userId"
+                name="id"
                 label="User ID"
                 required
-                {...register('userId')}
+                {...register('id')}
                 error={errors.userId ? true : false}
                 helperText={errors.userId?.message}
                 value={values.userId}
@@ -95,10 +111,10 @@ const NewUserModal = ({ open, onClose, addNewUser }) => {
             />
             <TextField
                 placeholder="Phone number"
-                name="phoneNumber"
+                name="phone"
                 label="Phone number"
                 required
-                {...register('phoneNumber')}
+                {...register('phone')}
                 error={errors.phoneNumber ? true : false}
                 helperText={errors.phoneNumber?.message}
                 value={values.phoneNumber}

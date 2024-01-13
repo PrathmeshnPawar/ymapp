@@ -1,4 +1,4 @@
-import React, { useState }  from'react'
+import React, { useEffect, useState }  from'react'
 import BasicCard from '../../common/BasicCard/BasicCard';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchBar from '../../common/SearchBar/SearchBar.js';
@@ -13,6 +13,7 @@ import cardHeaderStyles from './styles.js'
 //import NewUserModal from '../../components/Modal/NewUserModal.js';
 //import BasicModal from '../../common/BasicModal/BasicModal.js';
 import NewUserModal from '../../components/Modal/NewUserModal.js';
+import axios from 'axios';
 
 
 
@@ -21,6 +22,31 @@ const Authentication = () => {
     const [users, setUsers] = useState([]);
     // eslint-disable-next-line no-unused-vars
     const [searchResults, setSearchResults] = useState(users);
+    
+
+    useEffect(() => {
+       console.log('use effect called');
+       getUsersData();
+      },[]);
+
+
+      const getUsersData = async  ()=>{
+        
+
+        try {
+            const request = await axios.get("http://192.168.215.30:3000/api/all-users");
+            if (request.status === 200) {
+                console.log(request.data);
+                setUsers(request.data);
+            }
+            
+        } catch (error) {
+            
+        }
+
+
+      }
+     
 
     const getHeader = () => {
         const handleSearch = (value) => {
@@ -76,12 +102,13 @@ const Authentication = () => {
     const getContent = () => (
         <>
             {
+                
                 users.length ? 
                     users.map((user) => (
                         <Box sx={{ marginBottom: '20px' }}>
-                            <Typography>User ID: {user.userId}</Typography>
+                            <Typography>User ID: {user.id}</Typography>
                             <Typography>Email: {user.email}</Typography>
-                            <Typography>Phone Number: {user.phoneNumber}</Typography>
+                            <Typography>Phone Number: {user.phone}</Typography>
                         </Box>
                     )) :
                     <Typography 

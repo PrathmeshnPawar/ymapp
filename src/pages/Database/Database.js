@@ -6,7 +6,8 @@ import BasicCard from '../../common/BasicCard/BasicCard';
 
 const Database = () => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+
+
 
   const handleClick = () => {
     setOpen(true);
@@ -18,16 +19,10 @@ const Database = () => {
     }
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <GridWrapper>
-      <BasicCard content={<UserTable onError={() => setOpen(true)} />} />
+      <BasicCard content={<UserTable onError={() => setOpen(true)}  />} />
       <BasicSnackbar
         open={open}
         severity="error"
