@@ -34,7 +34,7 @@ const Authentication = () => {
         
 
         try {
-            const request = await axios.get("http://192.168.215.30:3000/api/all-users");
+            const request = await axios.get("http://192.168.184.30:3000/api/all-users");
             if (request.status === 200) {
                 console.log(request.data);
                 setUsers(request.data);

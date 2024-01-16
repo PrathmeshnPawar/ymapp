@@ -62,7 +62,7 @@ const NewUserModal = ({ open, onClose, addNewUser,id,email,phone }) => {
         console.error('addNewUser is not a function');
     }
     try {
-            const response = await axios.post('http://192.168.215.30:3000/api/create-user', {
+            const response = await axios.post('http://192.168.184.30:3000/api/create-user', {
             id: data.id,
             email: data.email,
             phone: data.phone,
@@ -89,10 +89,10 @@ const NewUserModal = ({ open, onClose, addNewUser,id,email,phone }) => {
         <Box sx={modalStyles.inputFields}>
             <TextField
                 placeholder="User ID"
-                name="id"
+                name="userId"
                 label="User ID"
                 required
-                {...register('id')}
+                {...register('userId')}
                 error={errors.userId ? true : false}
                 helperText={errors.userId?.message}
                 value={values.userId}
