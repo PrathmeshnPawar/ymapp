@@ -16,7 +16,7 @@ const defaultInputValues = {
 
 
 
-const NewUserModal = ({ open, onClose, addNewUser,userN,email,phone }) => {
+const EditUserModal = ({ open, onClose,editExistingUser,userN,email,phone }) => {
     const [values, setValues] = useState(defaultInputValues);
 
 
@@ -55,20 +55,19 @@ const NewUserModal = ({ open, onClose, addNewUser,userN,email,phone }) => {
         resolver: yupResolver(valuserNationSchema)
     });
 
- const addUser = async (data) => {
-    // Check if addNewUser is a function before calling it
-    if (typeof addNewUser === 'function') { 
-        addNewUser(data);
+
+const editUser = async (data) => {
+    if (typeof editExistingUser === 'function') {
+        editExistingUser(data);
         onClose();
     } else {
-        console.error('addNewUser is not a function');
+        console.error('editNewUser is not a function');
     }
     try {
-            const response = await axios.post('http://192.168.0.103:3000/api/signup', {
-    
-                username: data.userN,
-                email: data.email,
-                phone: data.phone,
+            const response = await axios.put('http://192.168.0.103:3000/api/update-user', {
+            username: data.userN,
+            email: data.email,
+            phone: data.phone,
         });
         console.log('Server response:', response.data);
 
@@ -80,31 +79,17 @@ const NewUserModal = ({ open, onClose, addNewUser,userN,email,phone }) => {
 
     const handleChange =  (value) => {
         setValues(value)
-       
-
     };
-
     useEffect(() => {
         if (open) setValues(defaultInputValues);
     }, [open])
 
     const getContent = () => (
         <Box sx={modalStyles.inputFields}>
-                        {/* <TextField
-                    placeholder="User id"
-                    name="id"
-                    label="User id"
-                    required
-                    {...register('id')}
-                    error={errors.id ? true : false}
-                    helperText={errors.id?.message}
-                    value={values.id}
-                    onChange={(event) => handleChange({ ...values, id: event.target.value })} /> */}
-
             <TextField
-                placeholder="User name"
+                placeholder="User Name"
                 name="userN"
-                label="User name"
+                label="User Name"
                 required
                 {...register('userN')}
                 error={errors.userN ? true : false}
@@ -141,13 +126,98 @@ const NewUserModal = ({ open, onClose, addNewUser,userN,email,phone }) => {
         <BasicModal
             open={open}
             onClose={onClose}
-            title="New user"
+            title="Edit user"
             subTitle="Fill out inputs and hit 'submit' button."
             content={getContent()}
-            onSubmit={handleSubmit(addUser)}
+            onSubmit={handleSubmit(editUser)}
         />
             
     )
 }
 
-export default NewUserModal
+export default EditUserModal
+
+// import React, { useState, useEffect } from 'react';
+// import DataTable from '../../common/DataTable/DataTable';
+// import { IconButton } from '@mui/material';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import EditUserModal from '../Modal/EditUserModal';
+
+// const columns = [
+//     { field: 'userN', headerName: 'User userN', wuserNth: 150 },
+//     { field: 'email', headerName: 'E-mail', wuserNth: 200 },
+//     { field: 'phone', headerName: 'Phone Number', wuserNth: 200 },
+//     {
+//         field: 'Actions',
+//         headerName: 'Actions',
+//         wuserNth: 200,
+//         renderCell: (params) => (
+//             <>
+//                 <IconButton
+//                     color="secondary"
+//                     onClick={() => handleDeleteUser(params.row.userN)}
+//                 >
+//                     <DeleteIcon />
+//                 </IconButton>
+//                 <IconButton
+//                     color="primary"
+//                     onClick={() => handleEditUser(params.row)}
+//                 >
+//                     {/* Add your EditIcon component or any other edit-related component */}
+//                     Edit
+//                 </IconButton>
+//             </>
+//         ),
+//     },
+// ];
+
+// const UserTable = ({ onError }) => {
+//     const userTableStyles = {
+//         height: '650px',
+//     };
+
+//     const [users, setUsers] = useState([]);
+//     const [editingUser, setEditingUser] = useState(null);
+
+//     useEffect(() => {
+//         fetch('http://192.168.123.30:3000/api/all-users')
+//             .then((response) => response.json())
+//             .then((json) => setUsers(json))
+//             .catch((error) => {
+//                 // Handle fetch errors
+//                 onError('Error fetching user data');
+//             });
+//     }, [onError]);
+
+//     const handleDeleteUser = (useruserN) => {
+//         // Add logic to handle the deletion of a user with the given useruserN
+//         // For example, you can send a delete request to the server
+//         console.log(`Deleting user with userN: ${useruserN}`);
+//     };
+
+//     const handleEditUser = (user) => {
+//         setEditingUser(user);
+//     };
+
+//     return (
+//         <>
+//             <DataTable
+//                 rows={users}
+//                 columns={columns}
+//                 sx={userTableStyles}
+//             />
+//             {editingUser && (
+//                 <EditUserModal
+//                     open={open}
+//                     onClose={() => setEditingUser(null)}
+//                     editExistingUser={editExistingUser}
+//                     userN={editingUser.userN}
+//                     email={editingUser.email}
+//                     phone={editingUser.phone}
+//                 />
+//             )}
+//         </>
+//     );
+// };
+
+// export default UserTable;

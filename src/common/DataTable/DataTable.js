@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 
-const DataTable = ({ rows, columns, loading, onDelete, sx }) => {
+const DataTable = ({ rows, columns, loading, onDelete,onClick, sx }) => {
   const [pageSize, setPageSize] = useState(2);
 
 
@@ -16,7 +16,6 @@ const DataTable = ({ rows, columns, loading, onDelete, sx }) => {
       columns={columns}
       loading={loading}
       sx={sx}
-      checkboxSelection
       pagination
       pageSize={pageSize}
       onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

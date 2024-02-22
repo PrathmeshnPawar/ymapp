@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import { modalStyles } from './styles';
 import CommonButton from '../CommonButton/CommonButton';
 
-const BasicModal = ({ open, onClose, title, subTitle, content, onSubmit, addNewUser }) => {
+const BasicModal = ({ open, onClose, title, subTitle, content, onSubmit }) => {
 
     return (
         <Modal open={open} onClose={onClose} >
